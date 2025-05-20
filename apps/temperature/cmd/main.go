@@ -21,14 +21,6 @@ const (
 )
 
 func main() {
-	//logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-
-	//config := appconfig.NewConfig(appName, appVersion, appPort)
-	//err := config.LoadConfig()
-	//if err != nil {
-	//	logger.Error(err.Error())
-	//}
-
 	// Echo instance
 	e := echo.New()
 
