@@ -1,5 +1,6 @@
 -- Create the database if it doesn't exist
-CREATE DATABASE smarthome;
+SELECT 'CREATE DATABASE smarthome'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'smarthome')\gexec
 
 -- Connect to the database
 \c smarthome;
@@ -21,3 +22,14 @@ CREATE TABLE IF NOT EXISTS sensors (
 CREATE INDEX IF NOT EXISTS idx_sensors_type ON sensors(type);
 CREATE INDEX IF NOT EXISTS idx_sensors_location ON sensors(location);
 CREATE INDEX IF NOT EXISTS idx_sensors_status ON sensors(status);
+
+truncate sensors;
+
+insert into sensors (name, type, location, value, unit)
+values ('Батарея отопления', 'heat', '2124131231.423423423', random(), '1');
+
+insert into sensors (name, type, location, value, unit)
+values ('Кондиционер', 'heat', '2124131477.423423488', random(), '2');
+
+insert into sensors (name, type, location, value, unit)
+values ('Печка', 'heat', '54124131477.7634234358', random(), '3');

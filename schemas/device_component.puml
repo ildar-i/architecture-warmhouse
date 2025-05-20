@@ -1,0 +1,39 @@
+@startuml
+title Device Control Service Component Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(WarmHouseSystem, "WarmHouse System") {
+  Container(DeviceControlService, "Device Control Service", "Golang API", "House devices controls")
+  Container(Database, "Database", "PostgreSQL", "Stores user data and devices")
+}
+
+Container(DeviceControlService, Device Control Service") {
+  Component(HeatingController, "HeatingController", "Manages heating")
+  Component(LightControlController, "LightControlController", "Manages light")
+  Component(GateController, "GateController", "Manages monitoring")
+
+  Component(HeatServiceLayer, "Heat Service Layer", "Business logic")
+  Component(LightServiceLayer, "Light Service Layer", "Business logic")
+  Component(GateServiceLayer, "Gate Service Layer", "Business logic")
+
+  Component(HeatRepositoryLayer, "Heat Repository Layer", "Data access logic")
+  Component(LightRepositoryLayer, "Light Repository Layer", "Data access logic")
+  Component(GateRepositoryLayer, "Gate Repository Layer", "Data access logic")
+}
+
+Rel(HeatingController,HeatServiceLayer,"Calls business logic")
+Rel(LightControlController,LightServiceLayer,"Calls business logic")
+Rel(GateController,GateServiceLayer,"Calls business logic")
+
+Rel(HeatServiceLayer,HeatRepositoryLayer,"Reads/Writes data")
+Rel(LightServiceLayer,LightRepositoryLayer,"Reads/Writes data")
+Rel(GateServiceLayer,GateRepositoryLayer,"Reads/Writes data")
+
+Rel(HeatRepositoryLayer,Database,"Reads/Writes user data")
+Rel(LightRepositoryLayer,Database,"Reads/Writes user data")
+Rel(GateRepositoryLayer,Database,"Reads/Writes user data")
+
+@enduml

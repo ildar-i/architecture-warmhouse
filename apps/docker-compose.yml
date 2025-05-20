@@ -1,13 +1,46 @@
-version: '3.8'
+#version: '3.8'
 
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: smarthome-postgres
-  ## тут нужно добавить настройки
+    container_name: postgres
+    restart: always
+    networks:
+      - smarthome-network
+    environment:
+      POSTGRES_DB: ${WARMHOUSE_PG_DB}
+      POSTGRES_USER: ${WARMHOUSE_PG_USERNAME}
+      POSTGRES_PASSWORD: ${WARMHOUSE_PG_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $WARMHOUSE_PG_USERNAME" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   temperature-api:
-  ## тут нужно добавить приложение
+    build:
+      context: ./temperature
+      dockerfile: Dockerfile
+      args:
+        - APP_PATH=./cmd/
+    container_name: temperature-api
+    restart: always
+    networks:
+      - smarthome-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=postgres://postgres:${WARMHOUSE_PG_USERNAME}@${WARMHOUSE_PG_PASSWORD}:${WARMHOUSE_PG_PORT}/${WARMHOUSE_PG_DB}
 
   app:
     build:
@@ -20,8 +53,8 @@ services:
       temperature-api:
         condition: service_started
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/smarthome
-      - TEMPERATURE_API_URL=http://temperature-api:8081
+      - DATABASE_URL=postgres://postgres:${WARMHOUSE_PG_USERNAME}@${WARMHOUSE_PG_PASSWORD}:${WARMHOUSE_PG_PORT}/${WARMHOUSE_PG_DB}
+      - TEMPERATURE_API_URL=${WARMHOUSE_TEMPERATURE_API_HOST}:${WARMHOUSE_PG_PORT}
     ports:
       - "8080:8080"
     restart: unless-stopped
