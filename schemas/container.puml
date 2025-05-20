@@ -1,0 +1,33 @@
+@startuml
+title Warm House Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Customer", "A user of the warm house system")
+
+System_Ext(house, "Customer House", "Customer house with sensors")
+
+Container_Boundary(WarmHouseSystem, "WarmHouse System") {
+  Container(WebApplication, "Web Application", "React", "Handles user interactions. Manages instrument sensors, remote monitoring of houses via API calls")
+  Container(UserService, "Auth Service", "Golang API", "Manages customer auth, get JWT tokens to make API calls")
+  Container(DeviceControlService, "Device Control Service", "Golang API", "Manages customer instrument sensors")
+  Container(MonitoringService, "Monitoring Service", "Golang API", "Remote monitoring of houses")
+  Container(Database, "Database", "PostgreSQL", "Stores user data, house and sensors")
+}
+
+Rel(user, WebApplication, "Uses the system")
+
+Rel(WebApplication,UserService,"call service enpdoint")
+Rel(WebApplication,DeviceControlService,"call service enpdoint")
+Rel(WebApplication,MonitoringService,"call service enpdoint")
+
+Rel(DeviceControlService,house,"control commands")
+Rel(MonitoringService,house,"receiving data on the status of sensors")
+
+Rel(UserService,Database,"read/write")
+Rel(DeviceControlService,Database,"read/write")
+Rel(MonitoringService,Database,"read/write")
+
+@enduml

@@ -1,0 +1,84 @@
+@startuml
+title Device Service Code Diagram
+
+class House {
+    +Integer house_id
+    +String user_id
+    +void turnOfAllDevices()
+}
+
+class Device {
+    +Integer device_id
+    +String name
+    +String status
+    +String serial_number
+    +Integer device_type_id_fk
+    +void turnOfDevice()
+    +void turnOnDevice()
+}
+
+class DeviceType {
+    +Integer device_type_id
+    +String name
+}
+
+House "1" -- "0..*" Device : has
+Device "1" -- "0..*" DeviceType : has
+
+interface HeatController {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface HeatService {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface HeatRepository {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+HeatController " " -- " " HeatService
+HeatService " " -- " " HeatRepository
+
+interface LightController {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface LightService {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface LightRepository {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+LightController " " -- " " LightService
+LightService " " -- " " LightRepository
+
+interface GateController {
+function getDeviceStatus(deviceId): error
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface GateService {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface GateRepository {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+GateController " " -- " " GateService
+GateService " " -- " " GateRepository
+
+
+@enduml

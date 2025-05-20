@@ -58,7 +58,7 @@ func (h *SensorHandler) GetSensors(c *gin.Context) {
 				// Update sensor with real-time data
 				sensors[i].Value = tempData.Value
 				sensors[i].Status = tempData.Status
-				sensors[i].LastUpdated = tempData.Timestamp
+				sensors[i].LastUpdated = tempData.LastUpdated
 				log.Printf("Updated temperature data for sensor %d from external API", sensor.ID)
 			} else {
 				log.Printf("Failed to fetch temperature data for sensor %d: %v", sensor.ID, err)
@@ -90,7 +90,7 @@ func (h *SensorHandler) GetSensorByID(c *gin.Context) {
 			// Update sensor with real-time data
 			sensor.Value = tempData.Value
 			sensor.Status = tempData.Status
-			sensor.LastUpdated = tempData.Timestamp
+			sensor.LastUpdated = tempData.LastUpdated
 			log.Printf("Updated temperature data for sensor %d from external API", sensor.ID)
 		} else {
 			log.Printf("Failed to fetch temperature data for sensor %d: %v", sensor.ID, err)
@@ -119,12 +119,12 @@ func (h *SensorHandler) GetTemperatureByLocation(c *gin.Context) {
 
 	// Return the temperature data
 	c.JSON(http.StatusOK, gin.H{
-		"location":    tempData.Location,
-		"value":       tempData.Value,
-		"unit":        tempData.Unit,
-		"status":      tempData.Status,
-		"timestamp":   tempData.Timestamp,
-		"description": tempData.Description,
+		"name":      tempData.Name,
+		"location":  tempData.Location,
+		"value":     tempData.Value,
+		"unit":      tempData.Unit,
+		"status":    tempData.Status,
+		"timestamp": tempData.CreatedAt,
 	})
 }
 

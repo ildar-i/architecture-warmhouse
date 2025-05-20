@@ -1,0 +1,35 @@
+@startuml
+title Auth Service Code Diagram
+
+class User {
+  +Integer id
+  +String name
+  +String email
+  +String password
+  +Date created_at
+  +Date updated_at
+}
+
+interface AuthController {
+function signup(name, password, email): error
+function login(name, password): (jwt_token, error)
+function refresh(name, password): (jwt_token, error)
+function logout(name, password): error
+}
+
+interface AuthService {
+function signup(name, password, email): error
+function login(name, password): (jwt_token, error)
+function refresh(name, password): (jwt_token, error)
+function logout(name, password): error
+}
+
+interface AuthRepository {
+function createUser(name, password, email): error
+function getUser(name, password): (jwt_token, error)
+}
+
+AuthController " " -- " " AuthService
+AuthService " " -- " " AuthRepository
+
+@enduml

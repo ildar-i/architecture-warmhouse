@@ -1,0 +1,57 @@
+@startuml
+title Monitoring Service Code Diagram
+
+class User {
+  +Integer id
+  +List<House> houses
+}
+
+class House {
+    +Integer house_id
+    +String name
+    +String user_id
+    +List<Device> devices
+}
+
+class Device {
+    +Integer device_id
+    +String name
+    +String status
+    +String serial_number
+    +Integer device_type_id_fk
+}
+
+class DeviceType {
+    +Integer device_type_id
+    +String name
+}
+
+class TelemetryData {
+    +Integer telemetry_data_id
+    +Integer device_id_fk
+}
+
+User "1" -- "0..*" House : has
+House "1" -- "0..*" Device : has
+Device "1" -- "0..*" DeviceType : has
+Device "1" -- "0..*" TelemetryData : has
+
+interface MonitoringController {
+function getDeviceStatus(deviceId): error
+function getHouseDevicesStatuses(houseId): error
+}
+
+interface MonitoringService {
+function getDeviceStatus(deviceId): error
+function getHouseDevicesStatuses(houseId): error
+}
+
+interface MonitoringRepository {
+function getDeviceStatus(deviceId): error
+function getHouseDevicesStatuses(houseId): error
+}
+
+MonitoringController " " -- " " MonitoringService
+MonitoringService " " -- " " MonitoringRepository
+
+@enduml
