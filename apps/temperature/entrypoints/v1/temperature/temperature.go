@@ -22,6 +22,12 @@ func NewTemperature(temperatureRepository temperature_repository.ITemperature) I
 	}
 }
 
+// DoGetTemperatureById получить температуру по идентификатору сенсора
+// @Summary получить температуру по идентификатору сенсора
+// @Produce      json
+// @Param        id path string true "идентификатор сенсора"
+// @Success      200 {object}  common.TemperatureResponse
+// @Router       /temperature/{id} [get]
 func (t *temperature) DoGetTemperatureById(ctx echo.Context) (common.TemperatureResponse, error) {
 	appCtx := ctx.Request().Context()
 	sensorId, err := common.GetPathParamByName(ctx, Id)

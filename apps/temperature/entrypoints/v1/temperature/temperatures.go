@@ -8,7 +8,7 @@ import (
 )
 
 type ITemperatures interface {
-	DoGetTemperatures(ctx echo.Context) ([]common.TemperatureResponse, error)
+	DoGetTemperatures(ctx echo.Context) (common.SensorTemperatureList, error)
 }
 
 type temperatures struct {
@@ -21,14 +21,19 @@ func NewTemperatures(temperatureRepository temperature_repository.ITemperature) 
 	}
 }
 
-func (t *temperatures) DoGetTemperatures(ctx echo.Context) ([]common.TemperatureResponse, error) {
+// DoGetTemperatures получить список сенсоров и температур
+// @Summary получить температуру по идентификатору сенсора
+// @Produce      json
+// @Success      200 {object}  common.SensorTemperatureList
+// @Router       /temperatures [get]
+func (t *temperatures) DoGetTemperatures(ctx echo.Context) (common.SensorTemperatureList, error) {
 	appCtx := ctx.Request().Context()
 
 	tmprs, err := t.temperatureRepository.GetTemperatureBySensors(appCtx)
 	if err != nil {
 		slog.Error(err.Error())
 
-		return []common.TemperatureResponse{}, common.ReturnInternalError(ctx, err, "")
+		return common.SensorTemperatureList{}, common.ReturnInternalError(ctx, err, "")
 	}
 
 	return tmprs, nil

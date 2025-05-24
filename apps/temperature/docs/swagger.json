@@ -1,0 +1,108 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Warm House API",
+        "title": "Warm House",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:8081",
+    "basePath": "/",
+    "paths": {
+        "/temperature/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "получить температуру по идентификатору сенсора",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "идентификатор сенсора",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.TemperatureResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/temperatures": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "получить температуру по идентификатору сенсора",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.SensorTemperatureList"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "common.SensorTemperatureList": {
+            "type": "object",
+            "properties": {
+                "temperaturesResponse": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.TemperatureResponse"
+                    }
+                }
+            }
+        },
+        "common.TemperatureResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "last_updated": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sensor_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "unit": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

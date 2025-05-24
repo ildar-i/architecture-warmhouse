@@ -6,6 +6,10 @@ const (
 	InputParamNotFound = "input param: %s, not found. error: %s"
 )
 
+const (
+	SwaggerRoute = "/swagger/*"
+)
+
 // TemperatureResponse represents the response from the temperature API
 type TemperatureResponse struct {
 	Name        string    `json:"name"`
@@ -17,4 +21,8 @@ type TemperatureResponse struct {
 	SensorType  string    `json:"type"`
 	CreatedAt   time.Time `json:"created_at"`
 	LastUpdated time.Time `json:"last_updated"`
+}
+
+type SensorTemperatureList struct {
+	TemperaturesResponse []TemperatureResponse
 }

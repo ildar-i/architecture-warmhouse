@@ -29,7 +29,7 @@ services:
       context: ./temperature
       dockerfile: Dockerfile
       args:
-        - APP_PATH=./cmd/
+        - APP_PATH=./
     container_name: temperature-api
     restart: always
     networks:

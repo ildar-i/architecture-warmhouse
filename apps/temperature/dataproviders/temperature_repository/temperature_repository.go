@@ -12,7 +12,7 @@ type ITemperature interface {
 	// GetTemperatureBySensorId получение температуры
 	GetTemperatureBySensorId(ctx context.Context, sensorId int) (common.TemperatureResponse, error)
 	// GetTemperatureBySensors получение температур
-	GetTemperatureBySensors(ctx context.Context) ([]common.TemperatureResponse, error)
+	GetTemperatureBySensors(ctx context.Context) (common.SensorTemperatureList, error)
 }
 
 type userRepository struct {
@@ -60,13 +60,14 @@ func (c *userRepository) GetTemperatureBySensorId(ctx context.Context, sensorId 
 		return common.TemperatureResponse{}, fmt.Errorf("error iterating sensor rows: %w", err)
 	}
 
-	res.Value = rand.Float64()
+	var value = float64(rand.Uint32() % 100)
+	res.Value = value
 
 	return res, nil
 }
 
 // GetTemperatureBySensors получение температур
-func (c *userRepository) GetTemperatureBySensors(ctx context.Context) ([]common.TemperatureResponse, error) {
+func (c *userRepository) GetTemperatureBySensors(ctx context.Context) (common.SensorTemperatureList, error) {
 	res := make([]common.TemperatureResponse, 0, 10)
 
 	query := `
@@ -76,7 +77,7 @@ func (c *userRepository) GetTemperatureBySensors(ctx context.Context) ([]common.
 
 	rows, err := c.pg.Pool.Query(ctx, query)
 	if err != nil {
-		return []common.TemperatureResponse{}, fmt.Errorf("error querying sensors: %w", err)
+		return common.SensorTemperatureList{}, fmt.Errorf("error querying sensors: %w", err)
 	}
 	defer rows.Close()
 
@@ -94,14 +95,17 @@ func (c *userRepository) GetTemperatureBySensors(ctx context.Context) ([]common.
 			&tempr.CreatedAt,
 		)
 		if err != nil {
-			return []common.TemperatureResponse{}, fmt.Errorf("error scanning sensor row: %w", err)
+			return common.SensorTemperatureList{}, fmt.Errorf("error scanning sensor row: %w", err)
 		}
+
+		var value = float64(rand.Uint32() % 100)
+		tempr.Value = value
 		res = append(res, tempr)
 	}
 
 	if err := rows.Err(); err != nil {
-		return []common.TemperatureResponse{}, fmt.Errorf("error iterating sensor rows: %w", err)
+		return common.SensorTemperatureList{}, fmt.Errorf("error iterating sensor rows: %w", err)
 	}
 
-	return res, nil
+	return common.SensorTemperatureList{TemperaturesResponse: res}, nil
 }
