@@ -26,10 +26,10 @@ CREATE INDEX IF NOT EXISTS idx_sensors_status ON sensors(status);
 truncate sensors;
 
 insert into sensors (name, type, location, value, unit)
-values ('Батарея отопления', 'heat', '2124131231.423423423', random(), '1');
+values ('Батарея отопления', 'temperature', '12', random(), '1');
 
 insert into sensors (name, type, location, value, unit)
-values ('Кондиционер', 'heat', '2124131477.423423488', random(), '2');
+values ('Кондиционер', 'temperature', '54', random(), '2');
 
 insert into sensors (name, type, location, value, unit)
-values ('Печка', 'heat', '54124131477.7634234358', random(), '3');
+values ('Печка', 'temperature', '24', random(), '3');
