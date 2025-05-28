@@ -11,28 +11,28 @@ Container_Boundary(WarmHouseSystem, "WarmHouse System") {
 }
 
 Container(DeviceControlService, Device Control Service") {
-  Component(HeatingController, "HeatingController", "Manages heating")
+  Component(TemperatureController, "TemperatureController", "Manages heating")
   Component(LightControlController, "LightControlController", "Manages light")
   Component(GateController, "GateController", "Manages monitoring")
 
-  Component(HeatServiceLayer, "Heat Service Layer", "Business logic")
+  Component(TemperatureServiceLayer, "Temperature Service Layer", "Business logic")
   Component(LightServiceLayer, "Light Service Layer", "Business logic")
   Component(GateServiceLayer, "Gate Service Layer", "Business logic")
 
-  Component(HeatRepositoryLayer, "Heat Repository Layer", "Data access logic")
+  Component(TemperatureRepositoryLayer, "Temperature Repository Layer", "Data access logic")
   Component(LightRepositoryLayer, "Light Repository Layer", "Data access logic")
   Component(GateRepositoryLayer, "Gate Repository Layer", "Data access logic")
 }
 
-Rel(HeatingController,HeatServiceLayer,"Calls business logic")
+Rel(TemperatureController,TemperatureServiceLayer,"Calls business logic")
 Rel(LightControlController,LightServiceLayer,"Calls business logic")
 Rel(GateController,GateServiceLayer,"Calls business logic")
 
-Rel(HeatServiceLayer,HeatRepositoryLayer,"Reads/Writes data")
+Rel(TemperatureServiceLayer,TemperatureRepositoryLayer,"Reads/Writes data")
 Rel(LightServiceLayer,LightRepositoryLayer,"Reads/Writes data")
 Rel(GateServiceLayer,GateRepositoryLayer,"Reads/Writes data")
 
-Rel(HeatRepositoryLayer,Database,"Reads/Writes user data")
+Rel(TemperatureRepositoryLayer,Database,"Reads/Writes user data")
 Rel(LightRepositoryLayer,Database,"Reads/Writes user data")
 Rel(GateRepositoryLayer,Database,"Reads/Writes user data")
 

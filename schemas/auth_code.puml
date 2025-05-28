@@ -1,15 +1,6 @@
 @startuml
 title Auth Service Code Diagram
 
-class User {
-  +Integer id
-  +String name
-  +String email
-  +String password
-  +Date created_at
-  +Date updated_at
-}
-
 interface AuthController {
 function signup(name, password, email): error
 function login(name, password): (jwt_token, error)

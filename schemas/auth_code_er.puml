@@ -1,0 +1,13 @@
+@startuml
+title Auth Service ER Diagram
+
+class User {
+  +Integer id
+  +String name
+  +String email
+  +String password
+  +Date created_at
+  +Date updated_at
+}
+
+@enduml
