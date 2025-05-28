@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 )
@@ -15,14 +16,15 @@ type TemperatureService struct {
 
 // TemperatureResponse represents the response from the temperature API
 type TemperatureResponse struct {
+	Name        string    `json:"name"`
 	Value       float64   `json:"value"`
 	Unit        string    `json:"unit"`
-	Timestamp   time.Time `json:"timestamp"`
 	Location    string    `json:"location"`
 	Status      string    `json:"status"`
 	SensorID    string    `json:"sensor_id"`
-	SensorType  string    `json:"sensor_type"`
-	Description string    `json:"description"`
+	SensorType  string    `json:"type"`
+	CreatedAt   time.Time `json:"created_at"`
+	LastUpdated time.Time `json:"last_updated"`
 }
 
 // NewTemperatureService creates a new temperature service
@@ -43,7 +45,12 @@ func (s *TemperatureService) GetTemperature(location string) (*TemperatureRespon
 	if err != nil {
 		return nil, fmt.Errorf("error fetching temperature data: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
@@ -61,11 +68,19 @@ func (s *TemperatureService) GetTemperature(location string) (*TemperatureRespon
 func (s *TemperatureService) GetTemperatureByID(sensorID string) (*TemperatureResponse, error) {
 	url := fmt.Sprintf("%s/temperature/%s", s.BaseURL, sensorID)
 
+	fmt.Println("GetTemperatureByID, url:")
+	fmt.Println(url)
+
 	resp, err := s.HTTPClient.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching temperature data: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)

@@ -1,0 +1,22 @@
+@startuml
+title Monitoring Service Code Diagram
+
+interface MonitoringController {
+function getDeviceStatus(deviceId): error
+function getHouseDevicesStatuses(houseId): error
+}
+
+interface MonitoringService {
+function getDeviceStatus(deviceId): error
+function getHouseDevicesStatuses(houseId): error
+}
+
+interface MonitoringRepository {
+function getDeviceStatus(deviceId): error
+function getHouseDevicesStatuses(houseId): error
+}
+
+MonitoringController " " -- " " MonitoringService
+MonitoringService " " -- " " MonitoringRepository
+
+@enduml

@@ -1,0 +1,71 @@
+basePath: /
+definitions:
+  common.SensorTemperatureList:
+    properties:
+      temperaturesResponse:
+        items:
+          $ref: '#/definitions/common.TemperatureResponse'
+        type: array
+    type: object
+  common.TemperatureResponse:
+    properties:
+      created_at:
+        type: string
+      last_updated:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      sensor_id:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      unit:
+        type: string
+      value:
+        type: number
+    type: object
+host: 127.0.0.1:8081
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Warm House API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Warm House
+  version: "1.0"
+paths:
+  /temperature/{id}:
+    get:
+      parameters:
+      - description: идентификатор сенсора
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.TemperatureResponse'
+      summary: получить температуру по идентификатору сенсора
+  /temperatures:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.SensorTemperatureList'
+      summary: получить температуру по идентификатору сенсора
+swagger: "2.0"

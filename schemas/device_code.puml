@@ -1,0 +1,60 @@
+@startuml
+title Device Service Code Diagram
+
+interface TemperatureController {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface TemperatureService {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface TemperatureRepository {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+TemperatureController " " -- " " TemperatureService
+TemperatureService " " -- " " TemperatureRepository
+
+interface LightController {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface LightService {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface LightRepository {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+LightController " " -- " " LightService
+LightService " " -- " " LightRepository
+
+interface GateController {
+function getDeviceStatus(deviceId): error
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface GateService {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+interface GateRepository {
+function activateDevice(deviceId): error
+function deactivateDevice(deviceId): error
+}
+
+GateController " " -- " " GateService
+GateService " " -- " " GateRepository
+
+
+@enduml
